@@ -5,8 +5,8 @@ import os, shutil
 from PIL import Image
 
 
-addr = 'http://localhost:5001'
-test_url = addr + '/restore/'
+addr = 'http://localhost:8000'
+test_url = addr + '/enhance/'
 
 # prepare headers for http request
 content_type = 'image/jpeg'

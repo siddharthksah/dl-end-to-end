@@ -21,7 +21,7 @@ def main():
     return render_template(about_path)
 
 # route http posts to this method
-@app.route('/restore/', methods=['POST'])
+@app.route('/enhance/', methods=['POST'])
 def restore():
     r = request
     # convert string of image data to uint8
@@ -70,4 +70,4 @@ def restore():
     return Response(response=response_pickled, status=200, mimetype="application/json")
 
 # start flask app
-app.run(host="0.0.0.0", port=5001, debug=True)
+app.run(host="0.0.0.0", port=8000, debug=True)
