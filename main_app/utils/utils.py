@@ -20,15 +20,15 @@ def load_image(image_file):
 
 def save_image(image_file):
 	try:
-		shutil.rmtree('../temp')
+		shutil.rmtree('./temp')
 	except:
 		pass
-	if not os.path.exists('../temp'):
-		os.makedirs('../temp')
+	if not os.path.exists('./temp'):
+		os.makedirs('./temp')
 	if image_file is not None:
 		img = load_image(image_file)
 		img = img.convert('RGB')
-		path = '../temp/'
+		path = './temp/'
 		img.save(os.path.join(path , 'temp.jpg'))
 
 	else:
@@ -45,8 +45,6 @@ def is_url_image(image_url):
 	if r.headers["content-type"] in image_formats:
 		return True
 	return False
-
-
 
 def download_image_from_url(url):
 	if check_if_url_is_valid(url):

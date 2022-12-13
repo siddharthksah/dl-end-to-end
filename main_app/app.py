@@ -13,7 +13,7 @@ import os, shutil
 from PIL import Image
 
 from image_restoration.restore_inference import inference_image_restoration
-
+from stt.stt import speech_to_text
 
 
 
@@ -40,14 +40,9 @@ selectedSidebar = st.radio(
         " ",
         ("Image Enhacement", "Speech2Text", "YT Sentiment"), horizontal=True)
 
-
 if selectedSidebar == "Image Enhacement":
     #upload button for the input image
     uploaded_file = st.file_uploader("Choose the image", type=['jpg', 'png', 'jpeg'])
-    #print(uploaded_file)
-    url = ""
-    #if uploaded_file is None:
-    url = st.text_input("Or paste the URL below", key="text")
 
     if uploaded_file is not None:
         
@@ -74,31 +69,13 @@ if selectedSidebar == "Image Enhacement":
     # create a streamlit button in the center with name Enhance
     if st.button('Enhance'):
         
-        if url != "" and len(os.listdir('./temp/')) == 0:
-            with st.spinner('Downloading media...'):
-                if is_url_image(url) == True:
-                    download_status = (download_image_from_url(url)) 
-                    download_status = str(download_status)
-                    if (download_status != "True"):
-                        st.error("Problem downloading media!")
-                    else:
-                        pass
-                    if download_status == False:
-                        st.error("Problem downloading media, please check the URL and filesize!")
-            
-            uploaded_image = Image.open("./temp/temp.jpg")
-        
-        # if the button is clicked, then call the main function
         try:
             header_placeholder.empty()
             image_preview_placeholder.empty()
         except:
             pass
         
-        col1, col2 = st.columns(2)
-
-        col1.header("Original")
-        col1.image(uploaded_image, use_column_width=True)
+        # if the button is clicked, then call the main function
         
         with st.spinner('Enhancing the image...'):
             
@@ -106,12 +83,25 @@ if selectedSidebar == "Image Enhacement":
                 
             enhanced_image = Image.open('./image_restoration/output/restored_imgs/temp.jpg')
 
+        
+        
+        col1, col2 = st.columns(2)
+
+        col1.header("Original")
+        col1.image(uploaded_image, use_column_width=True)
             
         col2.header("Enhanced")
         col2.image(enhanced_image, use_column_width=True)
         
+
+if selectedSidebar == "Speech2Text":
+    #upload button for the input image
+    uploaded_file = st.file_uploader("Choose the audio", type=['wav'])
+
+    if uploaded_file is not None:
+        # save audio file in the temp folder and display it
         
-    
-
-
-    
+        st.audio(uploaded_file, format="audio/wav")
+        
+        #speech_to_text("./temp/temp.wav")
+        
