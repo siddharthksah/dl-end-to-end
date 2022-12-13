@@ -5,7 +5,7 @@
 from datetime import datetime
 import streamlit as st
 from PIL import Image
-from utils import save_image
+from utils.utils import save_image, download_image_from_url, check_if_url_is_valid, is_url_image
 import requests
 import json
 import cv2
@@ -60,15 +60,40 @@ if selectedSidebar == "Image Enhacement":
         if extension == "png" or  extension == "PNG" or extension == "jpeg" or extension == "JPEG" or extension == "jpg" or extension == "JPG":
             uploaded_image = Image.open(uploaded_file)
             save_image(uploaded_file)
-            image_preview_placeholder = st.image(uploaded_image, caption='Uploaded Image', use_column_width=True)
+            col1, col2 = st.columns(2)
+
+            header_placeholder = col1.header("Original")
+            image_preview_placeholder = col1.image(uploaded_image, use_column_width=True, caption='Uploaded Image')
+            # image_preview_placeholder = st.image(uploaded_image, caption='Uploaded Image', use_column_width=True)
         else:
             st.write("Please upload a valid image file")
             st.stop()
+            
+    
     
     # create a streamlit button in the center with name Enhance
     if st.button('Enhance'):
+        
+        if url != "" and len(os.listdir('./temp/')) == 0:
+            with st.spinner('Downloading media...'):
+                if is_url_image(url) == True:
+                    download_status = (download_image_from_url(url)) 
+                    download_status = str(download_status)
+                    if (download_status != "True"):
+                        st.error("Problem downloading media!")
+                    else:
+                        pass
+                    if download_status == False:
+                        st.error("Problem downloading media, please check the URL and filesize!")
+            
+            uploaded_image = Image.open("./temp/temp.jpg")
+        
         # if the button is clicked, then call the main function
-        image_preview_placeholder.empty()
+        try:
+            header_placeholder.empty()
+            image_preview_placeholder.empty()
+        except:
+            pass
         
         col1, col2 = st.columns(2)
 
@@ -79,11 +104,14 @@ if selectedSidebar == "Image Enhacement":
             
             inference_image_restoration()
                 
-            enhanced_image = Image.open('../image_restoration/output/restored_imgs/temp.jpg')
+            enhanced_image = Image.open('./image_restoration/output/restored_imgs/temp.jpg')
 
             
         col2.header("Enhanced")
         col2.image(enhanced_image, use_column_width=True)
+        
+        
+    
 
 
     

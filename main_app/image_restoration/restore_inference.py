@@ -13,7 +13,7 @@ def inference_image_restoration():
     headers = {'content-type': content_type}
 
 
-    img = cv2.imread('temp/temp.jpg')
+    img = cv2.imread('./temp/temp.jpg')
 
     # delete the output folder
     if os.path.exists('output'):
@@ -30,3 +30,4 @@ def inference_image_restoration():
         print("Restored image saved successfully in the output folder")
         return True
     return False
+
