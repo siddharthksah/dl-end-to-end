@@ -7,15 +7,16 @@ from PIL import Image
 import warnings
 warnings.filterwarnings("ignore")
 
+from restoration import restore_img
+from utils import is_valid_image, is_image_sfw
+
 # Initialize the Flask application
-
-
-app = Flask(__name__, template_folder='template')
+app = Flask(__name__)
 
 
 
 # route http posts to this method
-@app.route('/stt/', methods=['POST'])
+@app.route('/sentiment/', methods=['POST'])
 def restore():
     r = request
     # convert string of image data to uint8
